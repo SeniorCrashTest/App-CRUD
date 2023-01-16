@@ -11,7 +11,7 @@ export class CustomerDetailsComponent implements OnInit {
 	constructor(private httpService: HttpService) { }
 
 	ngOnInit(): void {
-		this.httpService.createData();
+		// this.httpService.createData();
 	}
 
 }
