@@ -1,1 +1,28 @@
-<p>customers-list works!</p>
+<h2>Список покупателей</h2>
+
+<table class="table table-striped">
+	<ng-container *ngTemplateOutlet="tableHeadBlock"></ng-container>
+
+	<tbody>
+		<tr *ngFor="let customer of httpService.customers; let i = index">
+			<th scope="row">{{i + 1}}</th>
+			<td>{{customer.name}}</td>
+			<td>{{customer.email}}</td>
+			<td>{{customer.mobile}}</td>
+			<td>{{customer.location}}</td>
+		</tr>
+	</tbody>
+</table>
+
+
+<ng-template #tableHeadBlock>
+	<thead>
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Имя</th>
+			<th scope="col">Email</th>
+			<th scope="col">Телефон</th>
+			<th scope="col">Город</th>
+		</tr>
+	</thead>
+</ng-template>

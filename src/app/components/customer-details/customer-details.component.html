@@ -1,1 +1,20 @@
-<p>customer-Details works!</p>
+<h2>Добавить покупателя</h2>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+
+	<div class="mb-3">
+		<label class="form-label" for="name">Имя</label>
+		<input class="form-control" id="name" type="text" placeholder="Имя">
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label" for="email">Email</label>
+		<input class="form-control" id="email" type="email" placeholder="Email">
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label" for="name">Имя</label>
+		<input class="form-control" id="name" type="text" placeholder="Имя">
+	</div>
+
+</form>

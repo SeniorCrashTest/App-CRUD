@@ -32,7 +32,7 @@ export class HttpService {
 		this.http.get<ResponseCustomerInterface>(`${url}.json`)
 			.pipe(map((res: ResponseCustomerInterface) => {
 				const arr: CustomerInterface[] = [];
-				Object.keys(arr).forEach(key => arr.push({ key, ...res[key] }));
+				Object.keys(res).forEach(key => arr.push({ key, ...res[key] }));
 				return arr;
 			}))
 			.subscribe({
