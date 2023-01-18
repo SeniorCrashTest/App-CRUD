@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
-import { DEFAULT_CUSTOMER } from '../data/mock.data';
 import { CustomerInterface } from '../types/customer.interface';
 import { RequestCustomerInterface } from '../types/request-customer.interface';
 import { ResponseCustomerInterface } from '../types/response-customer.interface';
