@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { CustomerInterface } from '../types/customer.interface';
 import { RequestCustomerInterface } from '../types/request-customer.interface';
 import { ResponseCustomerInterface } from '../types/response-customer.interface';
@@ -16,15 +16,9 @@ export class HttpService {
 
 	constructor(private http: HttpClient) { }
 
-	createData(customer: CustomerInterface): void {
-		this.http.post<RequestCustomerInterface>(`${url}.json`, customer)
-			.subscribe({
-				next: (res: RequestCustomerInterface) => {
-					customer.key = res.name;
-					//TODO: push to customer[]
-				},
-				error: err => console.log(err)
-			});
+	createData(customer: CustomerInterface): Observable<RequestCustomerInterface> {
+		return this.http.post<RequestCustomerInterface>(`${url}.json`, customer)
+			.pipe(tap(res => this.customers.push({ ...{ key: res.name }, ...customer })));
 	}
 
 	getData(): void {
