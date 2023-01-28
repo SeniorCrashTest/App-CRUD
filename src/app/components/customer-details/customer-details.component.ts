@@ -23,9 +23,7 @@ export class CustomerDetailsComponent implements OnInit {
 
 	onSubmit(): void {
 		this.httpService.createData(this.form.value).subscribe({
-			next: (res: RequestCustomerInterface) => {
-				this.form.reset();
-			}
+			next: (res: RequestCustomerInterface) => this.form.reset()
 		});
 	}
 
@@ -37,11 +35,8 @@ export class CustomerDetailsComponent implements OnInit {
 			location: ['', [Validators.required,]],
 		})
 
-		// this.controls = this.form.controls
-
-		const customer = DEFAULT_CUSTOMER;
 		Object.keys(this.form.controls).forEach(
-			key => this.form.controls[key].setValue(customer?.[key as keyof CustomerInterface])
+			key => this.form.controls[key].setValue(DEFAULT_CUSTOMER?.[key as keyof CustomerInterface])
 		);
 	}
 }
