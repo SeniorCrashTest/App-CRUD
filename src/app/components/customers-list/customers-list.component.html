@@ -10,12 +10,7 @@
 			<ng-container *ngTemplateOutlet="isEditPos === i ? thenBlock : elseBlock ; context: {$implicit: customer}">
 			</ng-container>
 
-			<td class="controls">
-				<button (click)="editCustomer(i)" class="btn btn-info btn-sm ms-2"><i class="fas fa-edit"></i></button>
-				<button (click)="cancelCustomer()" class="btn btn-info btn-sm ms-2"><i class="fas fa-undo"></i></button>
-				<button (click)="saveCustomer()" class="btn btn-info btn-sm ms-2"><i class="fas fa-save"></i></button>
-				<button (click)="deleteCustomer()" class="btn btn-info btn-sm ms-2"><i class="fas fa-trash"></i></button>
-			</td>
+			<ng-container *ngTemplateOutlet="customerControlsBlock; context : {customer, index: i}"></ng-container>
 		</tr>
 	</tbody>
 </table>
@@ -58,4 +53,13 @@
 	<td>{{customer.email}}</td>
 	<td>{{customer.mobile}}</td>
 	<td>{{customer.location}}</td>
+</ng-template>
+
+<ng-template #customerControlsBlock let-customer="customer" let-i="index">
+	<td class="controls">
+		<button (click)="editCustomer(i)" class="btn btn-info btn-sm ms-2"><i class="fas fa-edit"></i></button>
+		<button (click)="cancelCustomer()" class="btn btn-info btn-sm ms-2"><i class="fas fa-undo"></i></button>
+		<button (click)="saveCustomer(customer)" class="btn btn-info btn-sm ms-2"><i class="fas fa-save"></i></button>
+		<button (click)="deleteCustomer()" class="btn btn-info btn-sm ms-2"><i class="fas fa-trash"></i></button>
+	</td>
 </ng-template>
