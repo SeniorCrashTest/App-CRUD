@@ -45,11 +45,11 @@ export class CustomersListComponent implements OnInit {
 	private resetCustomer = (): CustomerInterface => ({key: null, name: '', email: '', mobile: '', location: ''});
 
 	private mergeCustomerProps<T>(original: T, temp: T): T {
-		const result = {...original}
+		const result = {...original};
 
 	Object.keys(temp).forEach(key => {
 		if (temp[key as keyof T]) {
-			result[key as keyof T] = temp[key as keyof T]
+			result[key as keyof T] = temp[key as keyof T];
 		}
 	});
 	return result;
