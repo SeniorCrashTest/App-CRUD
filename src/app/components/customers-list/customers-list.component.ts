@@ -9,7 +9,7 @@ import { CustomerInterface } from 'src/app/shared/types/customer.interface';
 })
 export class CustomersListComponent implements OnInit {
 
-	isEditPos!: number;
+	isEditPos!: number | null;
 
 	private tempCustomer!: CustomerInterface
 
@@ -18,21 +18,30 @@ export class CustomersListComponent implements OnInit {
 	ngOnInit(): void {
 		this.httpService.getData();
 
-		this.tempCustomer = this.resetCustomer()
+		this.resetEditStatus()
 	}
 
 	editCustomer(i: number): void {
 		this.isEditPos = i;
 	}
 
-	cancelCustomer(): void { }
-
-	saveCustomer(customer: CustomerInterface): void {
-		const mergedCustomer = this.mergeCustomerProps(customer, this.tempCustomer)
-		console.log(mergedCustomer)
+	cancelCustomer(): void {
+		this.resetEditStatus()
 	}
 
-	deleteCustomer(): void { }
+	saveCustomer(customer: CustomerInterface, i: number): void {
+		const mergedCustomer = this.mergeCustomerProps(customer, this.tempCustomer)
+
+		this.httpService.updateData(mergedCustomer, i).subscribe({
+			next: () => {
+				this.resetEditStatus()
+			}
+		})
+	}
+
+	deleteCustomer(customer: CustomerInterface): void {
+		this.httpService.deleteData(customer)
+	}
 
 	setValue(key: string, original: string, value: string): void {
 		const  valueTrim = value.trim()
@@ -44,14 +53,18 @@ export class CustomersListComponent implements OnInit {
 
 	private resetCustomer = (): CustomerInterface => ({key: null, name: '', email: '', mobile: '', location: ''});
 
-	private mergeCustomerProps<T>(original: T, temp: T): T {
-		const result = {...original};
-
-	Object.keys(temp).forEach(key => {
-		if (temp[key as keyof T]) {
-			result[key as keyof T] = temp[key as keyof T];
-		}
-	});
-	return result;
+	private resetEditStatus(): void {
+		this.tempCustomer = this.resetCustomer()
+		this.isEditPos = null; 
 	}
+	private mergeCustomerProps(original: CustomerInterface, temp: CustomerInterface): CustomerInterface {
+    const result = { ...original };
+    Object.keys(temp).forEach(key => {
+      if (temp[key as keyof CustomerInterface]) {
+        result[key as keyof CustomerInterface] = temp[key as keyof CustomerInterface] ?? '';
+      }
+    });
+    return result;
+}
+
 }

@@ -5,7 +5,7 @@ import { CustomerInterface } from '../types/customer.interface';
 import { RequestCustomerInterface } from '../types/request-customer.interface';
 import { ResponseCustomerInterface } from '../types/response-customer.interface';
 
-const url = 'https://ng-crud-----20231201-default-rtdb.firebaseio.com/customers';
+const url = 'https://ng-crud-application-default-rtdb.firebaseio.com/';
 
 @Injectable({
 	providedIn: 'root'
@@ -35,9 +35,19 @@ export class HttpService {
 			);
 	}
 
-	updateData(): any { }
+	updateData(customer: CustomerInterface, i: number): Observable<CustomerInterface> {
+		const {key, ...data} = customer;
+		return	this.http.put<CustomerInterface>(`${url}/${key}.json`, data)
+		.pipe(tap(res => this.customers[i] = customer))
+	}
 
-	deleteData(): void { }
+	deleteData(customer: CustomerInterface): void {
+		this.http.delete(`${url}/${customer.key}.json`)
+		.subscribe({
+			next: () => {},
+			error: () => {},
+		})
+	}
 
 
 }
