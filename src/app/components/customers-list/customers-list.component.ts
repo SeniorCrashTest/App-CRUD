@@ -10,6 +10,7 @@ import { CustomerInterface } from 'src/app/shared/types/customer.interface';
 export class CustomersListComponent implements OnInit {
 
 	isEditPos!: number | null;
+	isNotChanged!: boolean;
 
 	private tempCustomer!: CustomerInterface
 
@@ -33,10 +34,8 @@ export class CustomersListComponent implements OnInit {
 		const mergedCustomer = this.mergeCustomerProps(customer, this.tempCustomer)
 
 		this.httpService.updateData(mergedCustomer, i).subscribe({
-			next: () => {
-				this.resetEditStatus()
-			}
-		})
+			next: () => this.resetEditStatus()
+		});
 	}
 
 	deleteCustomer(customer: CustomerInterface): void {
@@ -48,13 +47,15 @@ export class CustomersListComponent implements OnInit {
 
 		if (original !== value && valueTrim !== this.tempCustomer[key as keyof CustomerInterface]) {
 			this.tempCustomer[key as keyof CustomerInterface] = valueTrim;
+			this.isNotChanged = false;
 		}
 	}
 
 	private resetCustomer = (): CustomerInterface => ({key: null, name: '', email: '', mobile: '', location: ''});
 
 	private resetEditStatus(): void {
-		this.tempCustomer = this.resetCustomer()
+		this.tempCustomer = this.resetCustomer();
+		this.isNotChanged = true;
 		this.isEditPos = null; 
 	}
 	private mergeCustomerProps(original: CustomerInterface, temp: CustomerInterface): CustomerInterface {

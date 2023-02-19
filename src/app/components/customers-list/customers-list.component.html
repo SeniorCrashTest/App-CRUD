@@ -57,9 +57,12 @@
 
 <ng-template #customerControlsBlock let-customer="customer" let-i="index">
 	<td class="controls">
-		<button (click)="editCustomer(i)" class="btn btn-info btn-sm ms-2"><i class="fas fa-edit"></i></button>
-		<button (click)="cancelCustomer()" class="btn btn-info btn-sm ms-2"><i class="fas fa-undo"></i></button>
-		<button (click)="saveCustomer(customer, i)" class="btn btn-info btn-sm ms-2"><i class="fas fa-save"></i></button>
+		<button (click)="editCustomer(i)" *ngIf="isEditPos !== i" class="btn btn-info btn-sm ms-2"><i
+				class="fas fa-edit"></i></button>
+		<button (click)="cancelCustomer()" *ngIf="isEditPos == i" class="btn btn-info btn-sm ms-2"><i
+				class="fas fa-undo"></i></button>
+		<button (click)="saveCustomer(customer, i)" *ngIf="isEditPos == i" [disabled]="isNotChanged"
+			class="btn btn-info btn-sm ms-2"><i class="fas fa-save"></i></button>
 		<button (click)="deleteCustomer(customer)" class="btn btn-info btn-sm ms-2"><i class="fas fa-trash"></i></button>
 	</td>
 </ng-template>

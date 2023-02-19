@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, tap } from 'rxjs';
+import { catchError, map, Observable, of, tap } from 'rxjs';
 import { CustomerInterface } from '../types/customer.interface';
 import { RequestCustomerInterface } from '../types/request-customer.interface';
 import { ResponseCustomerInterface } from '../types/response-customer.interface';
@@ -30,9 +30,9 @@ export class HttpService {
 			}))
 			.subscribe({
 				next: (res: CustomerInterface[]) => this.customers = res,
-				error: err => console.log(err)
+				error: catchError(this.errorHandler('GET'))
 			}
-			);
+		);
 	}
 
 	updateData(customer: CustomerInterface, i: number): Observable<CustomerInterface> {
@@ -44,10 +44,15 @@ export class HttpService {
 	deleteData(customer: CustomerInterface): void {
 		this.http.delete(`${url}/${customer.key}.json`)
 		.subscribe({
-			next: () => {},
-			error: () => {},
+			next: () => this.customers.splice(this.customers.indexOf(customer), 1),
+			error: catchError(this.errorHandler('DELETE'))
 		})
 	}
 
-
-}
+	private errorHandler<T>(operation: string, res?: T) {
+		return (err: any): Observable<any> => {
+			console.log(`${operation} failed`);
+			return of(res)
+		}
+	}
+} 
